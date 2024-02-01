@@ -1,6 +1,6 @@
 package hangman;
 
-public class Status {
+public class GallowsStatuses {
     public static final String ZERO = """
              ╒══╗
                 ║
