@@ -1,14 +1,15 @@
 package hangman;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class Game {
     private static final String[] MENU = {"1. Начать новую игру",
-                                          "2. Выйти из приложения"};
+            "2. Выйти из приложения"};
 
     private static void printMenu() {
-        for (String option: Game.MENU) {
+        for (String option : Game.MENU) {
             System.out.println(option);
         }
         System.out.println();
@@ -38,23 +39,84 @@ public class Game {
             System.out.println();
             switch (choice) {
                 case 1:
-                    System.out.println("Start");
-                    System.out.println(readWords(file));
-//                    System.out.println();
-//                    for (String status: Status.STATUSES) {
-//                        System.out.println(status);
-//                        System.out.println();
-//                    }
+                    game(scanner, readWords(file));
                     break;
                 case 2:
                     System.out.println("Выход");
                     break;
             }
         }
+        scanner.close();
     }
 
-    private static void start() {
+    //todo проброс scanner не очень
+    private static void game(Scanner scanner, List<String> words) {
         Random random = new Random();
+        String word = words.get(random.nextInt(words.size())).toLowerCase(Locale.ROOT);
+        if (win(scanner, word)) {
+            System.out.println("Победа! Загаданное слово — " + word);
+        } else {
+            System.out.println("Поражение! Загаданное слово — " + word);
+        }
+    }
 
+    public static boolean win(Scanner scanner, String word) {
+        int mistakesCounter = 0;
+        List<Character> mistakes = new ArrayList<>();
+        Set<Character> exist = new HashSet<>();
+
+        while (mistakesCounter < 7) {
+            System.out.println(Status.STATUSES[mistakesCounter]);
+            System.out.print("Слово: ");
+            for (int i = 0; i < word.length(); i++) {
+                if (exist.contains(word.charAt(i))) {
+                    System.out.print(word.charAt(i) + " ");
+                } else {
+                    System.out.print("_" + " ");
+                }
+            }
+            System.out.println("\nОшибки (" + mistakesCounter + "): " + mistakes);
+
+            char input;
+
+            if (mistakesCounter != 6) {
+                while (true) {
+                    System.out.print("Буква: ");
+                    input = scanner.next().charAt(0);
+                    if (exist.contains(input) || mistakes.contains(input)) {
+                        System.out.println("Эта буква уже была!");
+                        continue;
+                    }
+                    break;
+                }
+
+                if (word.indexOf(input) != -1) {
+                    exist.add(input);
+                } else {
+                    mistakes.add(input);
+                    mistakesCounter++;
+                }
+
+                if (exist.size() == countUniqueChars(word)) {
+                    System.out.println();
+                    return true;
+                }
+            } else {
+                break;
+            }
+        }
+        return false;
+    }
+
+    private static int countUniqueChars(String word) {
+        Set<Character> unique = new HashSet<>();
+        int counter = 0;
+        for (int i = 0; i < word.length(); i++) {
+            if (!unique.contains(word.charAt(i))) {
+                counter++;
+            }
+            unique.add(word.charAt(i));
+        }
+        return counter;
     }
 }
