@@ -3,11 +3,11 @@ package hangman;
 import java.util.Scanner;
 
 public class Game {
-    private static final String[] menu = {"1. Начать новую игру",
+    private static final String[] MENU = {"1. Начать новую игру",
                                           "2. Выйти из приложения"};
 
     private static void printMenu() {
-        for (String option: Game.menu) {
+        for (String option: Game.MENU) {
             System.out.println(option);
         }
         System.out.println();
@@ -23,6 +23,11 @@ public class Game {
             switch (choice) {
                 case 1:
                     System.out.println("Start");
+                    System.out.println();
+                    for (String status: Status.STATUSES) {
+                        System.out.println(status);
+                        System.out.println();
+                    }
                     break;
                 case 2:
                     System.out.println("Выход");
