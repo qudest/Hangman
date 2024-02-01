@@ -13,17 +13,22 @@ public class Main {
     public static void getMenu() {
         Scanner scanner = new Scanner(System.in);
         Menu.printMenu();
-        int choice = scanner.nextInt();
-        System.out.println();
-        switch (choice) {
-            case 1:
-                Game game = new Game(new File("words.txt"));
-                game.start();
-                break;
-            case 2:
-                System.out.println("Выход");
-                System.exit(0);
-                break;
+        try {
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    Game game = new Game(new File("words.txt"));
+                    game.start();
+                    break;
+                case 2:
+                    System.out.println("Выход");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("\nПожалуйста, введите пункт меню!");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("\nПожалуйста, введите пункт меню!");
         }
     }
 }
