@@ -48,20 +48,25 @@ public class Game {
 
     private char inputLetter() {
         char input;
-        while (true) {
+        do {
             System.out.print("Буква: ");
             input = scanner.next().toLowerCase().charAt(0);
-            if (!isRusLetter(input)) {
-                System.out.println("Можно вводить только буквы кириллицы!");
-                continue;
+            if (validateInput(input)) {
+                return input;
             }
-            if (isInputted(input)) {
-                System.out.println("Эта буква уже была!");
-                continue;
-            }
-            break;
+        } while (true);
+    }
+
+    private boolean validateInput(char input) {
+        if (!isRusLetter(input)) {
+            System.out.println("Можно вводить только буквы кириллицы!");
+            return false;
         }
-        return input;
+        if (isInputted(input)) {
+            System.out.println("Эта буква уже была!");
+            return false;
+        }
+        return true;
     }
 
     private void printGameState() {
