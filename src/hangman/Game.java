@@ -18,10 +18,10 @@ public class Game {
     }
 
     public void start() {
-        System.out.println("\n" + startGameLoop() + word + "\n");
+        System.out.println("\n" + startGameRound() + word + "\n");
     }
 
-    private String startGameLoop() {
+    private String startGameRound() {
         while (mistakes.size() < GallowsStatuses.STATUSES.length-1) {
             System.out.println();
             printGameState();
